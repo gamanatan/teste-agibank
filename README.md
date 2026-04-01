@@ -197,9 +197,17 @@ O BlazDemo é um ambiente de demonstração público, então o comportamento pod
 
 ## CI/CD — GitHub Actions
 
-Configurei um pipeline no GitHub Actions que roda automaticamente em todo push ou pull request para a branch `main`. Ele executa os testes de API e Web e publica os relatórios como artefatos para download.
+Configurei um pipeline no GitHub Actions que roda automaticamente em todo push ou pull request para a branch `main`. Ele executa os três módulos de teste e publica os relatórios como artefatos para download.
 
 O arquivo está em `.github/workflows/ci.yml`.
+
+Os três jobs configurados são:
+
+- `api-tests` — baixa o Java 11, roda `mvn test` e publica o relatório Allure como artefato
+- `web-tests` — instala o Node 20, instala o Playwright com Chromium e roda os testes E2E, publicando o relatório HTML
+- `performance-tests` — faz o download do JMeter 5.6.3 direto no runner, executa o teste de carga contra o BlazDemo e publica o relatório HTML do JMeter como artefato
+
+Vale mencionar que o teste de performance pode demorar entre 5 e 10 minutos no CI dependendo da resposta do servidor BlazDemo, já que é um ambiente público. O script está configurado com 250 threads e 10 iterações para o teste de carga. Se quiser uma execução mais rápida no pipeline, é só reduzir as iterações no `.jmx`.
 
 ---
 
