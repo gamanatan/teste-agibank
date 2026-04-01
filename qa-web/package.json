@@ -1,0 +1,13 @@
+{
+  "name": "qa-web-agibank",
+  "version": "1.0.0",
+  "description": "Testes automatizados E2E - Blog do Agi",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright test && playwright show-report",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.43.0"
+  }
+}
