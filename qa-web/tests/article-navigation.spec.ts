@@ -37,7 +37,7 @@ test.describe('Navegação de artigos - Blog do Agi', () => {
       expect(href).toBeTruthy();
       await page.goto(href!);
       await page.waitForLoadState('networkidle');
-      expect(page.url()).toContain('blogdoagi.com.br');
+      expect(page.url()).toMatch(/agibank\.com\.br/);
     } else {
       // Se não encontrou link de artigo, valida que a página de busca carregou
       expect(page.url()).toContain('investimento');
