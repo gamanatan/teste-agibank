@@ -37,6 +37,36 @@ jobs:
           name: allure-report
           path: qa-api/target/site/allure-maven-plugin/
 
+  performance-tests:
+    name: Performance Tests (JMeter)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install JMeter
+        run: |
+          wget -q https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
+          tar -xzf apache-jmeter-5.6.3.tgz
+          echo "$PWD/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
+
+      - name: Create results folder
+        run: mkdir -p qa-performance/results
+
+      - name: Run Load Test
+        run: |
+          jmeter -n \
+            -t qa-performance/blazedemo-load-test.jmx \
+            -l qa-performance/results/load.jtl \
+            -e -o qa-performance/results/load-report \
+            -Jjmeter.save.saveservice.output_format=csv
+
+      - name: Upload Performance Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jmeter-report
+          path: qa-performance/results/load-report/
+
   web-tests:
     name: Web Tests (Playwright)
     runs-on: ubuntu-latest
